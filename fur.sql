@@ -1,34 +1,6 @@
--- phpMyAdmin SQL Dump
--- version 6.0.0-dev
--- https://www.phpmyadmin.net/
---
--- Host: localhost
--- Generation Time: Dec 04, 2025 at 11:14 AM
--- Server version: 12.0.2-MariaDB
--- PHP Version: 8.3.27
-
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-START TRANSACTION;
-SET time_zone = "+00:00";
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
-
---
--- Database: `fur`
---
 DROP DATABASE IF EXISTS `fur`;
-CREATE DATABASE IF NOT EXISTS `fur` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_uca1400_ai_ci;
+CREATE DATABASE IF NOT EXISTS `fur`;
 USE `fur`;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `gender`
---
 
 DROP TABLE IF EXISTS `gender`;
 CREATE TABLE IF NOT EXISTS `gender` (
@@ -40,12 +12,6 @@ CREATE TABLE IF NOT EXISTS `gender` (
   UNIQUE KEY `gender` (`gender`)
 );
 
--- --------------------------------------------------------
-
---
--- Table structure for table `roles`
---
-
 DROP TABLE IF EXISTS `roles`;
 CREATE TABLE IF NOT EXISTS `roles` (
   `roleId` tinyint(1) NOT NULL AUTO_INCREMENT,
@@ -56,12 +22,6 @@ CREATE TABLE IF NOT EXISTS `roles` (
   UNIQUE KEY `role` (`role`)
 );
 
--- --------------------------------------------------------
-
---
--- Table structure for table `skills`
---
-
 DROP TABLE IF EXISTS `skills`;
 CREATE TABLE IF NOT EXISTS `skills` (
   `skillId` bigint(11) NOT NULL AUTO_INCREMENT,
@@ -71,12 +31,6 @@ CREATE TABLE IF NOT EXISTS `skills` (
   PRIMARY KEY (`skillId`),
   UNIQUE KEY `skill` (`skill`)
 );
-
--- --------------------------------------------------------
-
---
--- Table structure for table `users`
---
 
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE IF NOT EXISTS `users` (
@@ -93,12 +47,6 @@ CREATE TABLE IF NOT EXISTS `users` (
   KEY `users_ibfk_2` (`roleId`)
 );
 
--- --------------------------------------------------------
-
---
--- Table structure for table `user_skills`
---
-
 DROP TABLE IF EXISTS `user_skills`;
 CREATE TABLE IF NOT EXISTS `user_skills` (
   `userId` bigint(11) NOT NULL,
@@ -108,25 +56,10 @@ CREATE TABLE IF NOT EXISTS `user_skills` (
   PRIMARY KEY (`userId`,`skillId`)
 );
 
---
--- Constraints for dumped tables
---
-
---
--- Constraints for table `users`
---
 ALTER TABLE `users`
   ADD CONSTRAINT `users_ibfk_1` FOREIGN KEY (`genderId`) REFERENCES `gender` (`genderId`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `users_ibfk_2` FOREIGN KEY (`roleId`) REFERENCES `roles` (`roleId`) ON DELETE CASCADE ON UPDATE CASCADE;
 
---
--- Constraints for table `user_skills`
---
 ALTER TABLE `user_skills`
   ADD CONSTRAINT `user_skills_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `users` (`userId`) ON DELETE NO ACTION,
   ADD CONSTRAINT `user_skills_ibfk_2` FOREIGN KEY (`skillId`) REFERENCES `skills` (`skillId`) ON DELETE NO ACTION;
-COMMIT;
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

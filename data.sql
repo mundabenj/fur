@@ -78,21 +78,17 @@ insert into user_skills (userId, skillId) values
 (171407,3),
 (171598,34),
 (171600,11),
-(172445,26);
-insert into user_skills (userId, skillId) values
+(172445,26),
 (186764,13),
 (188164,24),
 (189254,8),
 (189468,39),
-(189657,1);
-insert into user_skills (userId, skillId) values
+(189657,1),
 (191314,4),
 (191523,25),
 (192582,40),
-(193017,32);
-insert into user_skills (userId, skillId) values
-(193285,39);
-insert into user_skills (userId, skillId) values
+(193017,32),
+(193285,39),
 (193384,40),
 (193424,8),
 (171407,18),
