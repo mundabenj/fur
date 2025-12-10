@@ -58,22 +58,22 @@ insert into gender(gender) values
 ('Prefer not to say');
 
 insert into users (userId, fullname, email, roleId, genderId) values
-(171407, 'Walala, Derrick P. Omondi', 'walala@gmail.com', 1, 3),
-(171598, 'Mwiti, Melvis Mwenda', 'Mwiti@gmail.com', 2, 3),
-(171600, 'Obuki, Jesse Samuel Hawi', 'Obuki@gmail.com', 3, 3),
-(172445, 'Chege, Ashley Njoki', 'Chege.Ashley@gmail.com', 4, 3),
-(186764, 'Cheruiyot, Jepkemoi Faith', 'Cheruiyot@gmail.com', 5, 3),
-(188164, 'Maina, Shatra Wambui', 'Maina.Shatra@gmail.com', 6, 3),
-(189254, 'Kamau, Lyeon', 'Kamau@gmail.com', 7, 3),
-(189468, 'Chege, Beres Ndungu', 'Chege.Beres@gmail.com', 1, 3),
-(189657, 'Mawejje Makumbi, Daudi Kirabo', 'Mawejje@gmail.com', 2, 3),
-(191314, 'Makana, Nicholas Tambua', 'Makana@gmail.com', 3, 3),
-(191523, 'Kimani, Roy Macharia', 'Kimani@gmail.com', 4, 3),
-(192582, 'Namara, Joshua', 'Namara@gmail.com', 5, 3),
-(193017, 'Mawira, Roy Mutuma', 'Mawira@gmail.com', 6, 3),
-(193285, 'Ahmed, Hussein Abdi', 'Ahmed@gmail.com', 7, 3),
-(193384, 'More, Aditya Suhas', 'More@gmail.com', 1, 3),
-(193424, 'Maina, Warren Mwangi', 'Maina.Warren@gmail.com', 2, 3);
+(171407, 'Walala, Derrick P. Omondi', 'walala@devops.edu', 1, 3),
+(171598, 'Mwiti, Melvis Mwenda', 'Mwiti@devops.edu', 2, 3),
+(171600, 'Obuki, Jesse Samuel Hawi', 'Obuki@devops.edu', 3, 3),
+(172445, 'Chege, Ashley Njoki', 'Chege.Ashley@devops.edu', 4, 3),
+(186764, 'Cheruiyot, Jepkemoi Faith', 'Cheruiyot@devops.edu', 5, 3),
+(188164, 'Maina, Shatra Wambui', 'Maina.Shatra@devops.edu', 6, 3),
+(189254, 'Kamau, Lyeon', 'Kamau@devops.edu', 7, 3),
+(189468, 'Chege, Beres Ndungu', 'Chege.Beres@devops.edu', 1, 3),
+(189657, 'Mawejje Makumbi, Daudi Kirabo', 'Mawejje@devops.edu', 2, 3),
+(191314, 'Makana, Nicholas Tambua', 'Makana@devops.edu', 3, 3),
+(191523, 'Kimani, Roy Macharia', 'Kimani@devops.edu', 4, 3),
+(192582, 'Namara, Joshua', 'Namara@devops.edu', 5, 3),
+(193017, 'Mawira, Roy Mutuma', 'Mawira@devops.edu', 6, 3),
+(193285, 'Ahmed, Hussein Abdi', 'Ahmed@devops.edu', 7, 3),
+(193384, 'More, Aditya Suhas', 'More@devops.edu', 1, 3),
+(193424, 'Maina, Warren Mwangi', 'Maina.Warren@devops.edu', 2, 3);
 
 insert into user_skills (userId, skillId) values
 (171407,3),
