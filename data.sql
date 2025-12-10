@@ -214,14 +214,3 @@ insert into user_skills (userId, skillId) values
 (193285,35),
 (193384,10),
 (193424,14);
-
-
-SELECT u.fullname, u.email, r.role, g.gender, GROUP_CONCAT(s.skill SEPARATOR ', ') AS skills
-FROM users u
-LEFT JOIN roles r USING(roleId)
-LEFT JOIN gender g USING(genderId)
-LEFT JOIN user_skills us USING(userId)
-LEFT JOIN skills s USING(skillId)
-GROUP BY us.userId
-HAVING COUNT(us.userId) > 0
-ORDER BY u.fullname;
