@@ -65,7 +65,7 @@ CREATE TABLE IF NOT EXISTS `roles` (
 DROP TABLE IF EXISTS `skills`;
 CREATE TABLE IF NOT EXISTS `skills` (
   `skillId` bigint(11) NOT NULL AUTO_INCREMENT,
-  `skill` varchar(100) DEFAULT NULL,
+  `skill` varchar(200) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`skillId`),
@@ -83,7 +83,6 @@ CREATE TABLE IF NOT EXISTS `users` (
   `userId` bigint(11) NOT NULL AUTO_INCREMENT,
   `fullname` varchar(50) DEFAULT NULL,
   `email` varchar(50) DEFAULT NULL,
-  `address` text DEFAULT NULL,
   `genderId` tinyint(1) NOT NULL,
   `roleId` tinyint(1) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
@@ -106,8 +105,7 @@ CREATE TABLE IF NOT EXISTS `user_skills` (
   `skillId` bigint(11) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  PRIMARY KEY (`userId`,`skillId`),
-  KEY `user_skills_ibfk_2` (`skillId`)
+  PRIMARY KEY (`userId`,`skillId`)
 );
 
 --
