@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Dec 11, 2025 at 09:57 AM
+-- Generation Time: Dec 18, 2025 at 09:37 AM
 -- Server version: 12.0.2-MariaDB
 -- PHP Version: 8.3.27
 
@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS `gender` (
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`genderId`),
   UNIQUE KEY `gender` (`gender`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+);
 
 -- --------------------------------------------------------
 
@@ -54,7 +54,7 @@ CREATE TABLE IF NOT EXISTS `roles` (
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`roleId`),
   UNIQUE KEY `role` (`role`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+);
 
 -- --------------------------------------------------------
 
@@ -71,7 +71,7 @@ CREATE TABLE IF NOT EXISTS `skills` (
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`skillId`),
   UNIQUE KEY `skill` (`skill`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+);
 
 -- --------------------------------------------------------
 
@@ -92,7 +92,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   UNIQUE KEY `email` (`email`),
   KEY `users_ibfk_1` (`genderId`),
   KEY `users_ibfk_2` (`roleId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+);
 
 --
 -- Triggers `users`
@@ -118,7 +118,7 @@ CREATE TABLE IF NOT EXISTS `user_points` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`userId`,`points`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+);
 
 -- --------------------------------------------------------
 
@@ -134,7 +134,35 @@ CREATE TABLE IF NOT EXISTS `user_skills` (
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`userId`,`skillId`),
   KEY `user_skills_ibfk_2` (`skillId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+);
+
+--
+-- Triggers `user_skills`
+--
+DROP TRIGGER IF EXISTS `trg_after_user_skill_delete`;
+DELIMITER $$
+CREATE TRIGGER `trg_after_user_skill_delete` AFTER DELETE ON `user_skills` FOR EACH ROW BEGIN
+    DECLARE total_points DOUBLE;
+    SELECT SUM(s.points) INTO total_points
+    FROM user_skills us
+    LEFT JOIN skills s USING (skillId)
+    WHERE us.userId = OLD.userId;
+    UPDATE user_points SET points = total_points WHERE userId = OLD.userId;
+END
+$$
+DELIMITER ;
+DROP TRIGGER IF EXISTS `trg_after_user_skill_insert`;
+DELIMITER $$
+CREATE TRIGGER `trg_after_user_skill_insert` AFTER INSERT ON `user_skills` FOR EACH ROW BEGIN
+    DECLARE total_points DOUBLE;
+    SELECT SUM(s.points) INTO total_points
+    FROM user_skills us
+    LEFT JOIN skills s USING (skillId)
+    WHERE us.userId = NEW.userId;
+    UPDATE user_points SET points = total_points WHERE userId = NEW.userId;
+END
+$$
+DELIMITER ;
 
 --
 -- Constraints for dumped tables
