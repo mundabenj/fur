@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Dec 18, 2025 at 09:37 AM
+-- Generation Time: Dec 18, 2025 at 10:59 AM
 -- Server version: 12.0.2-MariaDB
 -- PHP Version: 8.3.27
 
@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS `gender` (
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`genderId`),
   UNIQUE KEY `gender` (`gender`)
-);
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -54,7 +54,7 @@ CREATE TABLE IF NOT EXISTS `roles` (
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`roleId`),
   UNIQUE KEY `role` (`role`)
-);
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -71,7 +71,7 @@ CREATE TABLE IF NOT EXISTS `skills` (
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`skillId`),
   UNIQUE KEY `skill` (`skill`)
-);
+) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -92,7 +92,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   UNIQUE KEY `email` (`email`),
   KEY `users_ibfk_1` (`genderId`),
   KEY `users_ibfk_2` (`roleId`)
-);
+) ENGINE=InnoDB AUTO_INCREMENT=193425 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Triggers `users`
@@ -118,7 +118,7 @@ CREATE TABLE IF NOT EXISTS `user_points` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`userId`,`points`)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -134,7 +134,7 @@ CREATE TABLE IF NOT EXISTS `user_skills` (
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`userId`,`skillId`),
   KEY `user_skills_ibfk_2` (`skillId`)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Triggers `user_skills`
@@ -164,6 +164,32 @@ END
 $$
 DELIMITER ;
 
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `user_skill_summary`
+-- (See below for the actual view)
+--
+DROP VIEW IF EXISTS `user_skill_summary`;
+CREATE TABLE IF NOT EXISTS `user_skill_summary` (
+`userId` bigint(11)
+,`fullname` varchar(50)
+,`ROLE` varchar(50)
+,`gender` varchar(50)
+,`user_skill` mediumtext
+,`total_points` double(19,2)
+);
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `user_skill_summary`
+--
+DROP TABLE IF EXISTS `user_skill_summary`;
+
+DROP VIEW IF EXISTS `user_skill_summary`;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `user_skill_summary`  AS SELECT `users`.`userId` AS `userId`, `users`.`fullname` AS `fullname`, `roles`.`role` AS `ROLE`, `gender`.`gender` AS `gender`, group_concat(`skills`.`skill` separator ', ') AS `user_skill`, sum(`skills`.`points`) AS `total_points` FROM ((((`users` left join `roles` on(`users`.`roleId` = `roles`.`roleId`)) left join `gender` on(`users`.`genderId` = `gender`.`genderId`)) left join `user_skills` on(`users`.`userId` = `user_skills`.`userId`)) left join `skills` on(`user_skills`.`skillId` = `skills`.`skillId`)) GROUP BY `users`.`userId` ;
+
 --
 -- Constraints for dumped tables
 --
@@ -187,6 +213,19 @@ ALTER TABLE `user_points`
 ALTER TABLE `user_skills`
   ADD CONSTRAINT `user_skills_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `users` (`userId`) ON DELETE NO ACTION,
   ADD CONSTRAINT `user_skills_ibfk_2` FOREIGN KEY (`skillId`) REFERENCES `skills` (`skillId`) ON DELETE NO ACTION;
+
+DELIMITER $$
+--
+-- Events
+--
+DROP EVENT IF EXISTS `evt_cleanup_unsused_skills`$$
+CREATE DEFINER=`root`@`localhost` EVENT `evt_cleanup_unsused_skills` ON SCHEDULE EVERY 1 MONTH STARTS '2025-12-18 13:58:22' ON COMPLETION NOT PRESERVE ENABLE DO BEGIN
+DELETE FROM skills
+WHERE skillId NOT IN (SELECT DISTINCT skillId FROM user_skills)
+ AND created_at < (NOW() - INTERVAL 1 MONTH);
+ END$$
+
+DELIMITER ;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
