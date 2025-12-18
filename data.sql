@@ -73,7 +73,7 @@ insert into users (userId, fullname, email, roleId, genderId) values
 (193017, 'Mawira, Roy Mutuma', 'Mawira@devops.edu', 6, 3),
 (193285, 'Ahmed, Hussein Abdi', 'Ahmed@devops.edu', 7, 3),
 (193384, 'More, Aditya Suhas', 'More@devops.edu', 1, 3),
-(171728, 'Otieno, Krystel Celline', 'Otieno@devops.edu', 1, 3),
+(171728, 'Otieno, Krystel Celline Auma', 'Otieno@devops.edu', 1, 3),
 (193424, 'Maina, Warren Mwangi', 'Maina.Warren@devops.edu', 2, 3);
 
 insert into user_skills (userId, skillId) values
